@@ -4,8 +4,12 @@ import br.com.alura.gerenciador_pedidos.model.Produto;
 import br.com.alura.gerenciador_pedidos.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service // Isso transforma sua classe em um Bean do Spring.
 public class ProdutoService {
+
+    List<Produto> listaProdutos;
 
     // Declaração do Repository
     private final ProdutoRepository produtoRepository;
@@ -21,4 +25,82 @@ public class ProdutoService {
         }
         produtoRepository.save(produto);
     }
+
+    public void buscarPorNome(String nome) {
+        List<Produto> listaProduto = produtoRepository.findByNomeContaining(nome);
+        if (listaProduto.isEmpty()) {
+            System.out.println("Produto não encontrado.");
+        } else {
+            listaProduto.forEach(produto -> System.out.println("Lista de produtos com nome pesquisado: " + produto.getNome()));
+        }
+    }
+
+    public void buscarPorCategoria(String nome) {
+        List<Produto> listaProdutoPorCategoria = produtoRepository.findByCategoriaNomeContainingIgnoreCase(nome);
+        if (listaProdutoPorCategoria.isEmpty()) {
+            System.out.println("Categoria não encontrada.");
+        } else {
+            listaProdutoPorCategoria.forEach(produto -> {
+                System.out.println("Lista de produtos com categoria " + nome + ": " + produto.getNome());
+            });
+        }
+    }
+
+    public void buscarPorMaiorPreco(Double preco) {
+        if (preco > 0) {
+            listaProdutos = produtoRepository.findByPrecoGreaterThan(preco);
+            listaProdutos.forEach(produto -> {
+                System.out.println("Produto com preço maior que: " + preco + " - " + produto.getNome() + " - " + produto.getPreco());
+            });
+        } else {
+            System.out.println("Preço do produto é inválido");
+        }
+    }
+
+    public void buscarPorMenorPreco(Double preco) {
+        if (preco > 0) {
+            listaProdutos = produtoRepository.findByPrecoLessThan(preco);
+            listaProdutos.forEach(produto -> {
+                System.out.println("Produto com preço menor que: " + preco + " - " + produto.getNome() + " - " + produto.getPreco());
+            });
+        } else {
+            System.out.println("Preço do produto é inválido");
+        }
+    }
+
+    public void consultarProdutosDeCategoriaPeloMenorPreco(String nomeCategoria) {
+        produtoRepository.findByCategoriaNomeOrderByPrecoAsc(nomeCategoria)
+                .forEach(c -> System.out.println("Produto com categoria: " + nomeCategoria + " - " + c.getNome()));
+
+    }
+
+    public void consultarProdutosDeCategoriaPeloMaiorPreco(String nomeCategoria) {
+        produtoRepository.findByCategoriaNomeOrderByPrecoDesc(nomeCategoria)
+                .forEach(c -> System.out.println("Produto com categoria: " + nomeCategoria + " - " + c.getNome()));
+
+    }
+
+    public void contarProdutosEmCategoria(String nomeCategoria) {
+        long contagem = produtoRepository.countByCategoriaNome(nomeCategoria);
+        System.out.println("Contagem de produtos na categoria: " + nomeCategoria + " - " + contagem);
+    }
+
+    public void contarProdutosEmPreco(Double preco) {
+        long contagem = produtoRepository.countByPrecoGreaterThan(preco);
+        System.out.println("Contagem de produtos com preço maior que: " + preco + " - " + contagem);
+    }
+
+    public List<Produto> buscaNomeProdutosOuComPrecoMenor(String nome, Double preco) {
+        return produtoRepository.findByNomeContainingOrPrecoLessThan(nome, preco);
+    }
+
+    public List<Produto> buscaTop3ProdutosPorPreco() {
+        return produtoRepository.findTop3ByOrderByPrecoDesc();
+    }
+
+    public List<Produto> buscaTop5ProdutosPorCategoria(String nomeCategoria) {
+        return produtoRepository.findTop5ByCategoriaNomeOrderByPrecoAsc(nomeCategoria);
+    }
+
 }
+

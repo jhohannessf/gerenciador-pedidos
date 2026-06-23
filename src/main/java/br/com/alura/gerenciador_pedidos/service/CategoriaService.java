@@ -5,7 +5,6 @@ import br.com.alura.gerenciador_pedidos.model.Produto;
 import br.com.alura.gerenciador_pedidos.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class CategoriaService {
 
     public Categoria consultarSalvarCategoria(Categoria categoria) {
         return categoriaRepository.findByNome(categoria.getNome())
-                .orElseGet(()-> categoriaRepository.save(categoria));
+                .orElseGet(() -> categoriaRepository.save(categoria));
     }
 
     public void salvarCategoria(Categoria categoria) {

@@ -1,7 +1,6 @@
 package br.com.alura.gerenciador_pedidos.service;
 
 import br.com.alura.gerenciador_pedidos.model.Pedido;
-import br.com.alura.gerenciador_pedidos.model.Produto;
 import br.com.alura.gerenciador_pedidos.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,4 +24,17 @@ public class PedidoService {
     public void salvarTodos(List<Pedido> pedidos) {
         pedidoRepository.saveAll(pedidos);
     }
+
+    public void pedidosSemData() {
+        pedidoRepository.findByDataIsNull().forEach(p -> {
+            System.out.println("Id do(s) pedido(s) sem data: " + p.getId());
+        });
+    }
+
+    public void pedidoComData() {
+        pedidoRepository.findByDataIsNotNull().forEach(p -> {
+            System.out.println("Id do(s) pedido(s) com data: " + p.getId() + " - " +  p.getData());
+        });
+    }
+
 }
