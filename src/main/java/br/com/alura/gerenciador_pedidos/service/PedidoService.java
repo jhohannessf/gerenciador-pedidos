@@ -1,13 +1,18 @@
 package br.com.alura.gerenciador_pedidos.service;
 
 import br.com.alura.gerenciador_pedidos.model.Pedido;
+import br.com.alura.gerenciador_pedidos.model.Produto;
 import br.com.alura.gerenciador_pedidos.repository.PedidoRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class PedidoService {
+
+    List<Pedido> listaPedidos;
 
     //Declarando o pedidoRepository
     private PedidoRepository pedidoRepository;
@@ -35,6 +40,15 @@ public class PedidoService {
         pedidoRepository.findByDataIsNotNull().forEach(p -> {
             System.out.println("Id do(s) pedido(s) com data: " + p.getId() + " - " +  p.getData());
         });
+    }
+
+    public List<Pedido> buscaPedidosEntreDatas(LocalDate inicio, LocalDate fim) {
+        listaPedidos = pedidoRepository.buscaPedidosEntreDatas(inicio, fim);
+        listaPedidos.forEach(p ->
+                System.out.printf("Pedido: %d - Data: %s%n",
+                        p.getId(), p.getData())
+        );
+        return listaPedidos;
     }
 
 }

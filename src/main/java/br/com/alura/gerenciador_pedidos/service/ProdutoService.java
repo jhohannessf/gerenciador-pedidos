@@ -5,6 +5,7 @@ import br.com.alura.gerenciador_pedidos.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service // Isso transforma sua classe em um Bean do Spring.
 public class ProdutoService {
@@ -26,6 +27,7 @@ public class ProdutoService {
         produtoRepository.save(produto);
     }
 
+    // Usando Query Method ou Derived Queries
     public void buscarPorNome(String nome) {
         List<Produto> listaProduto = produtoRepository.findByNomeContaining(nome);
         if (listaProduto.isEmpty()) {
@@ -100,6 +102,94 @@ public class ProdutoService {
 
     public List<Produto> buscaTop5ProdutosPorCategoria(String nomeCategoria) {
         return produtoRepository.findTop5ByCategoriaNomeOrderByPrecoAsc(nomeCategoria);
+    }
+
+
+    // Usando JPQL
+    public List<Produto> buscaProdutoMaiorValor(double valor) {
+        listaProdutos = produtoRepository.buscaProdutoMaiorValor(valor);
+        listaProdutos.forEach(produto -> {
+            System.out.println(produto.getNome());
+        });
+        return listaProdutos;
+    }
+
+    public List<Produto> buscaOrdenadaPorPrecoAsc() {
+        listaProdutos = produtoRepository.buscaOrdenadaPorPrecoAsc();
+        listaProdutos.forEach(produto ->
+                System.out.printf("Produto: %s - Preço: %.2f%n",
+                        produto.getNome(), produto.getPreco())
+        );
+        return listaProdutos;
+    }
+
+    public List<Produto> buscaOrdenadaPorPrecoDesc() {
+        listaProdutos = produtoRepository.buscaOrdenadaPorPrecoDesc();
+        listaProdutos.forEach(produto ->
+                System.out.printf("Produto: %s - Preço: %.2f%n",
+                        produto.getNome(), produto.getPreco())
+        );
+        return listaProdutos;
+    }
+
+    public List<Produto> buscaProdutoComecaLetra(String letra) {
+        listaProdutos = produtoRepository.buscaProdutoComecaLetra(letra);
+        listaProdutos.forEach(produto ->
+                System.out.printf("Produto: %s%n",
+                        produto.getNome())
+        );
+        return listaProdutos;
+    }
+
+    public void consultaMediaPrecosPorProduto() {
+        double media = produtoRepository.consultaMediaPrecosPorProduto();
+
+        // Se fosse fazer usando Lista
+//        double media = listaProdutos.stream()
+//                .mapToDouble(Produto::getPreco) //extrai o preço de cada produto
+//                .average() //calcula a média
+//                .orElse(0); //caso a lista esteja vazia
+        System.out.printf("Media da produto: %.2f%n", media);
+    }
+
+    public void buscarPrecoMaximoPorCategoria(String nomeCategoria) {
+        Double precoMaximo = produtoRepository.buscarPrecoMaximoPorCategoria(nomeCategoria);
+        System.out.println("Preco Maximo: " + precoMaximo);
+    }
+
+    public void contarNumeroProdutoPorCategoria() {
+        List<Object[]> contagemProdutos = produtoRepository.contarNumeroProdutoPorCategoria(); // Object[] :  É um array que pode guardar QUALQUER tipo de objeto.
+        contagemProdutos.forEach(produto -> {
+            System.out.println(produto[0] + " - " + produto[1]);
+        });
+    }
+
+    public void filtrarCategoriaComMaisde10Produtos(long quantidade) {
+        List<Object[]> contagemProdutos = produtoRepository.filtrarCategoriaComMaisde10Produtos(quantidade); // Object[] :  É um array que pode guardar QUALQUER tipo de objeto.
+        contagemProdutos.forEach(produto -> {
+            System.out.println(produto[0] + " - " + produto[1]);
+        });
+    }
+
+    public List<Produto> buscarProdutosFiltrados(String nome, String categoria) {
+        listaProdutos = produtoRepository.buscarProdutosFiltrados(nome, categoria);
+        listaProdutos.forEach(produto ->
+                System.out.printf("Produto: %s | Categoria: %s%n",
+                        produto.getNome(), produto.getCategoria() != null
+                                ? produto.getCategoria().getNome()
+                                : "Sem categoria")
+        );
+        return listaProdutos;
+
+    }
+
+    public List<Produto> buscarTop5ProdutosMaisCaros() {
+        listaProdutos = produtoRepository.buscarTop5ProdutosMaisCaros();
+        listaProdutos.forEach(produto ->
+                System.out.printf("Produto: %s - Preço: %.2f%n",
+                        produto.getNome(), produto.getPreco())
+        );
+        return listaProdutos;
     }
 
 }

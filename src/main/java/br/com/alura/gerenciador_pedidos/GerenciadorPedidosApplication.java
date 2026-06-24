@@ -1,5 +1,7 @@
 package br.com.alura.gerenciador_pedidos;
 
+import br.com.alura.gerenciador_pedidos.model.Categoria;
+import br.com.alura.gerenciador_pedidos.model.Fornecedor;
 import br.com.alura.gerenciador_pedidos.model.Produto;
 import br.com.alura.gerenciador_pedidos.service.CategoriaService;
 import br.com.alura.gerenciador_pedidos.service.FornecedorService;
@@ -10,7 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -141,11 +143,50 @@ public class GerenciadorPedidosApplication implements CommandLineRunner {
 //		});
 
 		// Retorne os cinco produtos mais baratos de uma categoria.
-		List<Produto> produtos1 = produtoService.buscaTop5ProdutosPorCategoria("Tecnologia");
-		produtos1.forEach(produto -> {
-			System.out.println(produto.getNome());
-		});
+//		List<Produto> produtos1 = produtoService.buscaTop5ProdutosPorCategoria("Tecnologia");
+//		produtos1.forEach(produto -> {
+//			System.out.println(produto.getNome());
+//		});
 
+		// Crie uma consulta que retorne os produtos com preço maior que um valor
+//		System.out.println("Digite o valor do produto que deseja buscar: ");
+//		double valor = sc.nextDouble();
+//		sc.nextLine();
+//		produtoService.buscaProdutoMaiorValor(valor);
+
+		// Crie uma consulta que retorne os produtos ordenados pelo preço crescente.
+//		produtoService.buscaOrdenadaPorPrecoAsc();
+
+		// Crie uma consulta que retorne os produtos ordenados pelo preço decrescente.
+//		produtoService.buscaOrdenadaPorPrecoDesc();
+
+		// Crie uma consulta que retorne os produtos que comecem com uma letra específica.
+//		produtoService.buscaProdutoComecaLetra("t");
+
+		// Crie uma consulta que retorne os pedidos feitos entre duas datas.
+//		pedidoService.buscaPedidosEntreDatas(LocalDate.of(2026,6,22), LocalDate.now());
+
+		// Crie uma consulta que retorne a média de preços dos produtos.
+//		produtoService.consultaMediaPrecosPorProduto();
+
+		// Crie uma consulta que retorne o preço máximo de um produto em uma categoria
+//		produtoService.buscarPrecoMaximoPorCategoria("Tecnologia");
+
+		// Crie uma consulta para contar o número de produtos por categoria.
+//		produtoService.contarNumeroProdutoPorCategoria();
+
+		// Crie uma consulta para filtrar categorias com mais de 10 produtos.
+//		produtoService.filtrarCategoriaComMaisde10Produtos(10);
+
+		// Crie uma consulta para retornar os produtos filtrados por nome ou por categoria (use null caso não queira informar o nome do produto ou categoria).
+//		System.out.println("Digite o nome do produto: ");
+//		String nome = sc.nextLine();
+//		System.out.println("Digite o categoria do produto: ");
+//		String categoria = sc.nextLine();
+//		produtoService.buscarProdutosFiltrados(nome, categoria);
+
+		// Crie uma consulta nativa para buscar os cinco produtos mais caros
+		produtoService.buscarTop5ProdutosMaisCaros();
 
 		sc.close();
 
